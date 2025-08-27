@@ -1,14 +1,19 @@
-import { useState } from 'react'
-import Login from './components/Login'
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Login from './components/pages/Login';
+import Board from './components/pages/Board';
+
+
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <Login/>
-    </>
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/board" element={<Board />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
+    </Routes>
   )
 }
 
