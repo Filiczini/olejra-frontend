@@ -41,11 +41,14 @@ client/
 ## ▶️ Getting Started (Cloned Repo)
 **Requirements:** Node.js 20+, npm
 
+```
 npm i
 npm run dev
+
 create .env for future API calls
 сlient/.env
 VITE_API_URL="http://localhost:5174"
+```
 
 Open [http://localhost:5173](http://localhost:5173).
 
