@@ -12,27 +12,19 @@ A beginner‑friendly pet project inspired by Jira, currently focused on the fro
 > **Database requirement:** The backend uses **PostgreSQL only** (no MySQL/SQLite). Managed options like **Neon** or **Supabase** are recommended.
 > Backend stack (planned): **Node.js 20 + Fastify + Prisma + PostgreSQL**. This README covers the client only.
 
-## 🗄️ Database: PostgreSQL (Required)
+## Branching Strategy (Minimal)
 
-Although this repository currently contains the client only, the API is designed for **PostgreSQL**. When you add/clone the API later, use:
+- **main** — stable; deploys to production (Render / Neon). **Direct pushes are prohibited.**
+- **dev** — integration (daily development). **Direct pushes should be avoided/prohibited.**
+- **feature/*** — short-lived branches for tasks; merged into `dev` via Pull Request.
+- **hotfix/*** — urgent fixes branched from `main`; PR into `main`, then sync `main` → `dev`.
 
-* **Local dev:** PostgreSQL 14+ installed locally *or* a dev database on **Neon/Supabase**.
-* **Connection string (API/.env):**
+## Naming Conventions
 
-  ```env
-  DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/DB_NAME?schema=public"
-  ```
-* **Prisma datasource (for API):**
-
-  ```prisma
-  datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
-  }
-  ```
-* **Why Postgres?** Strong constraints/relations, JSONB, great Prisma support, easy managed hosting.
-
-> If you only run the **client**, Postgres isn’t required yet. It becomes mandatory once you hook up the API.
+- Feature: `feature/login-form`, `feature/tasks-advance-rule`
+- Fix: `fix/task-move-bug`
+- Chore: `chore/eslint-prettier`
+- (Optional ticket prefix) `feature/OLE-12-login-form`
 
 ## 📦 Project Structure
 
@@ -46,64 +38,16 @@ client/
     index.css       # minimal styles
 ```
 
-## ✨ Current Features
-
-* Single page: login form (email + password)
-* Basic client‑side checks (empty fields → alert)
-* Mock login via `alert()` (no API call yet)
-
 ## ▶️ Getting Started (Cloned Repo)
-
-If you cloned this repository from GitHub, **you do NOT need to create a new React app**. Just install and run:
-
 **Requirements:** Node.js 20+, npm
 
-```bash
-# 1) go to the client app (adjust if your repo root already IS the client)
-cd client
-
-# 2) install deps
 npm i
-
-# 3) (optional) create .env for future API calls
-# client/.env
-# VITE_API_URL="http://localhost:5174"
-
-# 4) start dev server
 npm run dev
-```
+create .env for future API calls
+сlient/.env
+VITE_API_URL="http://localhost:5174"
 
 Open [http://localhost:5173](http://localhost:5173).
 
-### Why not `npm create vite@latest`?
 
-That command is only for **starting a brand‑new project from scratch**. If you already cloned this repo, the client is set up—just install and run.
-
-## 🔧 Configuration
-
-* `client/.env` (optional for now)
-
-  ```env
-  VITE_API_URL="http://localhost:5174"
-  ```
-
-  Used later when we hook up the real `/auth/login` endpoint.
-
-## 📜 NPM Scripts
-
-```bash
-npm run dev      # start Vite dev server
-npm run build    # production build
-npm run preview  # preview the production build locally
-```
-
-## 🧭 Roadmap
-
-* Hook up real backend (Fastify + Prisma)
-* Replace `alert()` with POST `/auth/login` and store token
-* Add React Router + protected routes
-* Implement Projects/Statuses/Issues views (Kanban)
-* Basic tests (Vitest + React Testing Library)
-* Deploy: Render (static client)
-* **DB:** PostgreSQL (Neon/Supabase in prod; local Postgres in dev)
 
