@@ -3,9 +3,9 @@ name: Frontend CI (root)
 
 on:
   push:
-    branches: [main]
+    branches: [dev]
   pull_request:
-    branches: [main]
+    branches: [dev]
 
 concurrency:
   group: fe-${{ github.ref }}
