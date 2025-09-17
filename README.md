@@ -21,10 +21,12 @@ A beginner‑friendly pet project inspired by Jira, currently focused on the fro
 
 ## Naming Conventions
 
-- Feature: `feature/login-form`, `feature/tasks-advance-rule`
-- Fix: `fix/task-move-bug`
-- Chore: `chore/eslint-prettier`
-- (Optional ticket prefix) `feature/OLE-12-login-form`
+- **feat:** New feature
+- **fix:** Bug fix
+- **refactor:** Code refactoring without changing behavior or adding features
+- **docs:** Documentation-only changes
+- **chore:** Maintenance tasks (config, build, tooling)
+- **test:** Add or update tests
 
 ## 📦 Project Structure
 
