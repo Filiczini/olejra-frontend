@@ -12,13 +12,6 @@ A beginner‑friendly pet project inspired by Jira, currently focused on the fro
 > **Database requirement:** The backend uses **PostgreSQL only** (no MySQL/SQLite). Managed options like **Neon** or **Supabase** are recommended.
 > Backend stack (planned): **Node.js 20 + Fastify + Prisma + PostgreSQL**. This README covers the client only.
 
-## Branching Strategy (Minimal)
-
-- **main** — stable; deploys to production (Render / Neon). **Direct pushes are prohibited.**
-- **dev** — integration (daily development). **Direct pushes should be avoided/prohibited.**
-- **feature/*** — short-lived branches for tasks; merged into `dev` via Pull Request.
-- **hotfix/*** — urgent fixes branched from `main`; PR into `main`, then sync `main` → `dev`.
-
 ## Naming Conventions
 
 - **feat:** New feature
