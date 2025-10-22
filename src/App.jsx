@@ -1,8 +1,7 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "./components/pages/Login";
-import Board from "./components/pages/Board";
-import Demo from "./components/pages/Demo.jsx";
+import Login from "./components/pages/LoginPage.jsx";
+import Board from "./components/pages/BoardPage.jsx";
 
 function Home() {
   return <h1>Home</h1>;
@@ -16,7 +15,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/board" element={<Board />} />
-        <Route path="/demo" element={<Demo />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </>

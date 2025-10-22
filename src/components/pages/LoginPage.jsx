@@ -8,8 +8,7 @@ export default function Login() {
 
   function onSubmit(e) {
     e.preventDefault();
-    if (!email || !pass) return alert("Вкажіть email і пароль");
-    if (username && password) navigate("/board");
+    if (email && pass) navigate("/board");
   }
 
   return (
