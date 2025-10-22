@@ -1,13 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
 
   function onSubmit(e) {
     e.preventDefault();
     if (!email || !pass) return alert("Вкажіть email і пароль");
-    alert(`Логін OK як ${email}`);
+    if (username && password) navigate("/board");
   }
 
   return (
