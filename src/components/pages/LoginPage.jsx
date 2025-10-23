@@ -1,32 +1,42 @@
+import { api } from "../../api/axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  function onSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (email && pass) navigate("/board");
-  }
+    setError("");
+    try {
+      const res = await api.post("/login", { email, password });
+      if (res.data.success) navigate("/board");
+    } catch (err) {
+      if (err.response) {
+        // Backend responded with a status code
+        if (err.response.status === 401) {
+          setError("Невірна пошта або пароль");
+        } else {
+          setError(`Помилка сервера: ${err.response.status}`);
+        }
+      } else if (err.request) {
+        setError("Не вдалося під’єднатися до бекенда");
+      } else {
+        setError(`Помилка: ${err.message}`);
+      }
+    }
+  };
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={handleSubmit}>
       <h1>Вхід</h1>
-      <input
-        type="email"
-        placeholder="you@example.com"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="••••••••"
-        value={pass}
-        onChange={(e) => setPass(e.target.value)}
-      />
+      <input type="email" placeholder="логін@приклад.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <input type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} />
       <button type="submit">Увійти</button>
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </form>
   );
 }
