@@ -26,3 +26,18 @@ button {
   color: black;
   cursor: pointer;
 }
+
+.board-container {
+  width: 100% ;
+}
+.columns {
+  display: flex;
+  min-width: 70vw;
+  min-height: 30vh;
+}
+.column {
+  padding: 0px 10px;
+  margin: 0px 10px;
+  flex: 1;
+  border: 1px solid whitesmoke;
+}
