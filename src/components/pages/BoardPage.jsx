@@ -41,7 +41,7 @@ export default function BoardPage() {
               <div key={task.id} className="task">
                 <span className="task__title">{task.title}</span>
                 {task.status !== "DONE" && (
-                  <button onClick={() => handleAdvance(task.id)} className="task__button" title="Move to next column" /* accessibility hint */>
+                  <button onClick={() => handleAdvance(task.id)} className="task__button" title="Move to next column">
                     →
                   </button>
                 )}
