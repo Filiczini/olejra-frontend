@@ -14,8 +14,8 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     try {
-      const res = await api.post("/login", { email, password });
-      if (res.data.success) navigate("/board");
+      const res = await api.post("/auth/login", { email, password });
+      if (res.data?.ok) navigate("/board");
     } catch (err) {
       if (err.response) {
         // Backend responded with a status code
