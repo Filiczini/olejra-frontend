@@ -8,13 +8,19 @@ export const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-api.interceptors.response.use(
-  (res) => res,
-  (err) => {
-    const status = err?.envresponse?.status;
-    if (status === 401 && typeof window !== "undefined" && window.location.pathname !== "/login") {
-      window.location.href = "/login";
+let interceptorAttached = false;
+if (!interceptorAttached) {
+  interceptorAttached = true;
+  api.interceptors.response.use(
+    (res) => res,
+    async (err) => {
+      if (err?.response?.status === 401) {
+        try {
+          await api.post("/auth/logout");
+        } catch (_) {}
+        window.location.assign("/");
+      }
+      return Promise.reject(err);
     }
-    return Promise.reject(err);
-  }
-);
+  );
+}
