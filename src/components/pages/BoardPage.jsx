@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { api } from "../../api/axios";
 import "./BoardPage.css";
 import { useNavigate } from "react-router-dom";
+import AuthGate from "../auth/AuthGate";
 
 const statuses = ["BACKLOG", "TODO", "IN_PROGRESS", "DONE"];
 
@@ -17,26 +18,21 @@ export default function BoardPage() {
   const [tasks, setTasks] = useState([]);
   const navigate = useNavigate();
 
-  // On mount: verify auth and then fetch tasks; redirect to '/' on 401
+  // Auth is handled by AuthGate; here we only fetch tasks
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
-        await api.get("/auth/me");
         const res = await api.get("/tasks");
         if (!cancelled) setTasks(res.data);
       } catch (err) {
-        if (err?.response?.status === 401) {
-          navigate("/");
-        } else {
-          console.error("Failed to load board", err);
-        }
+        console.error("Failed to load board", err);
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [navigate]);
+  }, []);
 
   const handleAdvance = async (id) => {
     try {
@@ -56,15 +52,7 @@ export default function BoardPage() {
 
   const handleLogout = async () => {
     try {
-      const csrf = sessionStorage.getItem("csrfToken");
-      await api.post(
-        "/auth/logout",
-        {},
-        {
-          headers: { "x-csrf-token": csrf },
-        }
-      );
-      sessionStorage.removeItem("csrfToken");
+      await api.post("/auth/logout");
       navigate("/");
     } catch (err) {
       console.error("Logout failed", err);

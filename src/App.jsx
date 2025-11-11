@@ -1,22 +1,24 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/pages/LoginPage.jsx";
 import Board from "./components/pages/BoardPage.jsx";
-
-function Home() {
-  return <h1>Home</h1>;
-}
+import AuthGate from "./components/auth/AuthGate.jsx";
 
 import "./App.css";
 
 function App() {
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/board" element={<Board />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
-    </>
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route
+        path="/board"
+        element={
+          <AuthGate>
+            <Board />
+          </AuthGate>
+        }
+      />
+      <Route path="*" element={<Navigate to="/login" replace />} />
+    </Routes>
   );
 }
 
