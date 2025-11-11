@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { api } from "../../api/axios";
 import "./BoardPage.css";
 import { useNavigate } from "react-router-dom";
-import AuthGate from "../auth/AuthGate";
 
 const statuses = ["BACKLOG", "TODO", "IN_PROGRESS", "DONE"];
 
