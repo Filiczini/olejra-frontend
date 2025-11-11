@@ -15,7 +15,10 @@ export default function LoginPage() {
     setError("");
     try {
       const res = await api.post("/auth/login", { email, password });
-      if (res.data?.ok) navigate("/board");
+      if (res.data?.csrfToken) {
+        sessionStorage.setItem("csrfToken", res.data.csrfToken);
+      }
+      navigate("/board");
     } catch (err) {
       if (err.response) {
         // Backend responded with a status code
