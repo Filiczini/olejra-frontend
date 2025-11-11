@@ -16,14 +16,39 @@ const statusNames = {
 export default function BoardPage() {
   const [tasks, setTasks] = useState([]);
   const navigate = useNavigate();
-  // On mount: fetch tasks from the API
+
+  // On mount: verify auth and then fetch tasks; redirect to '/' on 401
   useEffect(() => {
-    api.get("/tasks").then((res) => setTasks(res.data));
-  }, []);
+    let cancelled = false;
+    (async () => {
+      try {
+        await api.get("/auth/me");
+        const res = await api.get("/tasks");
+        if (!cancelled) setTasks(res.data);
+      } catch (err) {
+        if (err?.response?.status === 401) {
+          navigate("/");
+        } else {
+          console.error("Failed to load board", err);
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [navigate]);
 
   const handleAdvance = async (id) => {
-    const res = await api.post(`/tasks/${id}/advance`); // Server returns the updated task (with new status)
-    setTasks((prevArr) => prevArr.map((task) => (task.id === id ? res.data : task)));
+    try {
+      const res = await api.post(`/tasks/${id}/advance`);
+      setTasks((prevArr) => prevArr.map((task) => (task.id === id ? res.data : task)));
+    } catch (err) {
+      if (err?.response?.status === 401) {
+        navigate("/");
+      } else {
+        console.error("Advance failed", err);
+      }
+    }
   };
 
   const columns = { BACKLOG: [], TODO: [], IN_PROGRESS: [], DONE: [] };
