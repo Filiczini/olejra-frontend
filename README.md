@@ -1,16 +1,15 @@
 # Olejra — Minimal React Client (Jira‑lite)
 
-A beginner‑friendly pet project inspired by Jira, currently focused on the frontend. This step delivers a **React + Vite** client with a simple login form (no real backend yet).
+A minimal React client for the Olejra task board. Uses React + Vite and connects to the Olejra backend (Fastify + PostgreSQL + Prisma) via Axios. Includes login page, board page, and task movement using the new POST /tasks/advance payload API.
 
 ## 🚀 Tech Stack
 
-* **React 18**
-* **Vite** (bundler)
-* **JavaScript (no TS)**
-* **CSS** (minimal styles)
-
-> **Database requirement:** The backend uses **PostgreSQL only** (no MySQL/SQLite). Managed options like **Neon** or **Supabase** are recommended.
-> Backend stack (planned): **Node.js 20 + Fastify + Prisma + PostgreSQL**. This README covers the client only.
+- **React 18**
+- **Vite** (bundler)
+- **JavaScript (no TS yet)**
+- **Axios** (API client)
+- **React Router**
+- **CSS modules / plain CSS**
 
 ## Naming Conventions
 
@@ -24,28 +23,38 @@ A beginner‑friendly pet project inspired by Jira, currently focused on the fro
 ## 📦 Project Structure
 
 ```
-client/
-  src/
-    main.jsx        # entry point, mounts the app to #root
-    App.jsx         # root component
+src/
+  main.jsx
+  App.jsx
+  api/
+    axios.jsx        # shared axios client
+    tasks.js         # tasks API wrapper
+  components/
     pages/
-      Login.jsx     # simple login form
-    index.css       # minimal styles
+      LoginPage.jsx
+      BoardPage.jsx
+  utils/
+    status.js        # STATUS_FLOW and canTransition
+  styles/
+    *.css
 ```
 
 ## ▶️ Getting Started (Cloned Repo)
+
 **Requirements:** Node.js 20+, npm
 
 ```
 npm i
 npm run dev
 
-create .env for future API calls
-сlient/.env
-VITE_API_URL="http://localhost:5174"
+Create `olejra-frontend/.env`:
+VITE_API_BASE_URL="http://localhost:5174/api"
 ```
 
 Open [http://localhost:5173](http://localhost:5173).
 
+## Task Movement
 
-
+The frontend now uses the backend transition API:
+POST /tasks/advance with payload { taskId, from, to }
+Local validation ensures only valid forward transitions based on STATUS_FLOW.
