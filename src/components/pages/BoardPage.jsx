@@ -1,11 +1,11 @@
+// olejra-frontend/src/components/pages/BoardPage.jsx
 import { useEffect, useState } from "react";
 import { api } from "../../api/axios";
 import "./BoardPage.css";
 import { useNavigate } from "react-router-dom";
+import { STATUS_FLOW, canTransition } from "../../utils/status";
+import { advanceTask } from "../../api/tasks";
 
-const statuses = ["BACKLOG", "TODO", "IN_PROGRESS", "DONE"];
-
-// Human-friendly labels
 const statusNames = {
   BACKLOG: "Backlog",
   TODO: "To-do",
@@ -14,8 +14,10 @@ const statusNames = {
 };
 
 export default function BoardPage() {
+  const [loading, setLoading] = useState({});
   const [tasks, setTasks] = useState([]);
   const navigate = useNavigate();
+  const statuses = STATUS_FLOW;
 
   // Auth is handled by AuthGate; here we only fetch tasks
   useEffect(() => {
@@ -33,18 +35,38 @@ export default function BoardPage() {
     };
   }, []);
 
-  const handleAdvance = async (id) => {
+  async function handleAdvance(task) {
+    const from = task.status;
+    const currentIndex = STATUS_FLOW.indexOf(from);
+    const to = STATUS_FLOW[currentIndex + 1];
+
+    // Local guard: only allow moving to the next status
+    if (to == null || !canTransition(from, to)) {
+      console.warn("Invalid local transition", { from, to });
+      return;
+    }
+
+    // Prevent duplicate requests for the same task
+    if (loading[task.id]) return;
+
+    setLoading((prev) => ({ ...prev, [task.id]: true }));
+
     try {
-      const res = await api.post(`/tasks/${id}/advance`);
-      setTasks((prevArr) => prevArr.map((task) => (task.id === id ? res.data : task)));
+      const res = await advanceTask(task.id, from, to);
+      setTasks((prevArr) => prevArr.map((t) => (t.id === task.id ? res.data : t)));
     } catch (err) {
       if (err?.response?.status === 401) {
         navigate("/");
+      } else if (err?.response?.status === 400) {
+        console.error("Advance rejected by backend", err);
+        // Optional: refetch board state
       } else {
         console.error("Advance failed", err);
       }
+    } finally {
+      setLoading((prev) => ({ ...prev, [task.id]: false }));
     }
-  };
+  }
 
   const columns = { BACKLOG: [], TODO: [], IN_PROGRESS: [], DONE: [] };
   for (const task of tasks) columns[task.status]?.push(task);
@@ -76,7 +98,7 @@ export default function BoardPage() {
               <div key={task.id} className="task">
                 <span className="task__title">{task.title}</span>
                 {task.status !== "DONE" && (
-                  <button onClick={() => handleAdvance(task.id)} className="task__button" title="Move to next column">
+                  <button onClick={() => handleAdvance(task)} disabled={loading[task.id]} className="task__button" title="Move to next column">
                     →
                   </button>
                 )}
