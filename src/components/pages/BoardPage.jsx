@@ -96,7 +96,9 @@ export default function BoardPage() {
 
             {columns[status].map((task) => (
               <div key={task.id} className="task">
-                <span className="task__title">{task.title}</span>
+                <span className="task__title" onClick={() => navigate(`/tasks/${task.id}`)} tabIndex={0}>
+                  {task.title}
+                </span>
                 {task.status !== "DONE" && (
                   <button onClick={() => handleAdvance(task)} disabled={loading[task.id]} className="task__button" title="Move to next column">
                     →
