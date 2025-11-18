@@ -7,3 +7,11 @@ export function advanceTask(taskId, from, to) {
     to,
   });
 }
+
+export function getTask(taskId) {
+  return api.get(`/tasks/${taskId}`);
+}
+
+export function updateTask(taskId, data) {
+  return api.patch(`/tasks/${taskId}`, data);
+}
