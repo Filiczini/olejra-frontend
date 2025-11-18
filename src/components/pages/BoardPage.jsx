@@ -83,9 +83,9 @@ export default function BoardPage() {
   return (
     <div className="board">
       <div className="board__header">
-        <h1 className="board__title">Моя дошка задач</h1>
+        <h1 className="board__title">Olejra - choose the future !</h1>
         <button className="logout-btn" onClick={handleLogout} aria-label="Вийти з акаунту" title="Вийти">
-          Вийти
+          Exit
         </button>
       </div>
 
