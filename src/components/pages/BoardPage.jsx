@@ -83,9 +83,9 @@ export default function BoardPage() {
   return (
     <div className="board">
       <div className="board__header">
-        <h1 className="board__title">Моя дошка задач</h1>
+        <h1 className="board__title">Olejra - choose the future !</h1>
         <button className="logout-btn" onClick={handleLogout} aria-label="Вийти з акаунту" title="Вийти">
-          Вийти
+          Exit
         </button>
       </div>
 
@@ -96,7 +96,9 @@ export default function BoardPage() {
 
             {columns[status].map((task) => (
               <div key={task.id} className="task">
-                <span className="task__title">{task.title}</span>
+                <span className="task__title" onClick={() => navigate(`/tasks/${task.id}`)} tabIndex={0}>
+                  {task.title}
+                </span>
                 {task.status !== "DONE" && (
                   <button onClick={() => handleAdvance(task)} disabled={loading[task.id]} className="task__button" title="Move to next column">
                     →

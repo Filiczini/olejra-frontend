@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/pages/LoginPage.jsx";
 import Board from "./components/pages/BoardPage.jsx";
 import AuthGate from "./components/auth/AuthGate.jsx";
+import TaskDetailsPage from "./components/pages/TaskDetailsPage.jsx";
 
 import "./App.css";
 
@@ -14,6 +15,14 @@ function App() {
         element={
           <AuthGate>
             <Board />
+          </AuthGate>
+        }
+      />
+      <Route
+        path="/tasks/:id"
+        element={
+          <AuthGate>
+            <TaskDetailsPage />
           </AuthGate>
         }
       />

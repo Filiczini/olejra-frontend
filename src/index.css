@@ -1,11 +1,21 @@
 /* Global styles */
 :root {
-  --bg: #f6f7fb;
-  --text: #1f2937;         /* dark gray for text */
-  --muted: #6b7280;        /* gray for hints */
-  --border: #e5e7eb;       /* light border */
-  --card: #ffffff;         /* white cards */
-  --accent: #111827;       /* black-ish for buttons */
+  --bg:       #f3f4f6;   /* slightly darker than white background */
+  --card:     #ffffff;   /* pure white card */
+  --card-hover: #f9fafb; /* subtle contrast on hover */
+
+  --border:   #d1d5db;   /* visible but soft border */
+  --border-hover: #cbd5e1; /* darker border on hover */
+
+  --text:     #111827;   /* deep graphite text color */
+  --text-light: #4b5563; /* for descriptions and secondary text */
+
+  --muted:    #6b7280;   /* muted gray for labels or hints */
+
+  --accent: #111111;        /* rich deep black */
+  --accent-hover: #616161;  /* smooth dark gray hover */
+
+  --error:    #dc2626;   /* clean red for error messages */
 }
 
 html, body, #root {

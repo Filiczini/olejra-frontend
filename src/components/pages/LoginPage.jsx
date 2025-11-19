@@ -20,7 +20,7 @@ export default function LoginPage() {
     const emailTrim = email.trim();
     const pass = password;
     if (!emailTrim || !pass) {
-      setError("Заповніть email і пароль");
+      setError("Please fill email and password");
       return;
     }
 
@@ -34,25 +34,25 @@ export default function LoginPage() {
         const { status, data } = err.response;
         switch (status) {
           case 401:
-            setError("Невірна пошта або пароль");
+            setError("Invalid email or password");
             break;
           case 429:
-            setError("Забагато спроб. Спробуйте пізніше.");
+            setError("Too many attempts. Please try again later.");
             break;
           case 422:
-            setError(data?.error || "Некоректні дані форми");
+            setError(data?.error || "Invalid form data");
             break;
           default:
             if (status >= 500) {
-              setError("Помилка сервера. Спробуйте ще раз пізніше.");
+              setError("Server error. Please try again later.");
             } else {
-              setError(data?.error || `Помилка сервера: ${status}`);
+              setError(data?.error || `Server Error: ${status}`);
             }
         }
       } else if (err?.request) {
-        setError("Не вдалося під’єднатися до бекенда");
+        setError("Failed to connect to the backend");
       } else {
-        setError(`Помилка: ${err?.message || "невідома помилка"}`);
+        setError(`Error: ${err?.message || "unknown error"}`);
       }
     } finally {
       setSubmitting(false);
@@ -61,14 +61,14 @@ export default function LoginPage() {
 
   return (
     <form onSubmit={handleSubmit} noValidate>
-      <h1>Вхід</h1>
+      <h1>Access your workspace</h1>
 
-      <input type="email" inputMode="email" autoComplete="email" placeholder="логін@приклад.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+      <input type="email" inputMode="email" autoComplete="email" placeholder="your@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
       <input type="password" autoComplete="current-password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
 
       <button type="submit" disabled={isSubmitting} aria-busy={isSubmitting} aria-disabled={isSubmitting}>
-        {isSubmitting ? "Увійти…" : "Увійти"}
+        {isSubmitting ? "Log in..." : "Log in"}
       </button>
 
       {error && (
