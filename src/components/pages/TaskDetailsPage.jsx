@@ -18,10 +18,12 @@ export default function TaskDetailsPage() {
   const navigate = useNavigate();
 
   const [task, setTask] = useState(null);
-  const [form, setForm] = useState({ title: "", description: "" });
+  // Form state is used only in edit mode
+  const [form, setForm] = useState({ title: "", description: "", status: "" });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
+  const [isEditing, setIsEditing] = useState(false); // controls edit mode
 
   // Load task details
   useEffect(() => {
@@ -34,9 +36,11 @@ export default function TaskDetailsPage() {
         if (cancelled) return;
 
         setTask(res.data);
+        // Prepare form state based on loaded task
         setForm({
           title: res.data.title ?? "",
           description: res.data.description ?? "",
+          status: res.data.status ?? STATUS_FLOW[0],
         });
         setError(null);
       } catch (err) {
@@ -59,23 +63,59 @@ export default function TaskDetailsPage() {
     setForm((prev) => ({ ...prev, [name]: value }));
   }
 
+  function handleBack() {
+    navigate("/board");
+  }
+
+  function handleEditClick() {
+    if (!task) return;
+    // Sync form with current task state before editing
+    setForm({
+      title: task.title ?? "",
+      description: task.description ?? "",
+      status: task.status ?? STATUS_FLOW[0],
+    });
+    setError(null);
+    setIsEditing(true);
+  }
+
+  function handleCancelEdit() {
+    // Reset form back to current task values and switch to read-only view
+    if (task) {
+      setForm({
+        title: task.title ?? "",
+        description: task.description ?? "",
+        status: task.status ?? STATUS_FLOW[0],
+      });
+    }
+    setError(null);
+    setIsEditing(false);
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     if (!task) return;
 
-    // Nothing changed → skip request
-    if (form.title === task.title && (form.description ?? "") === (task.description ?? "")) {
+    const noChanges = form.title === task.title && (form.description ?? "") === (task.description ?? "") && (form.status ?? "") === (task.status ?? "");
+
+    // If nothing changed we simply exit edit mode without sending a request
+    if (noChanges) {
+      setIsEditing(false);
       return;
     }
 
     try {
       setSaving(true);
       const res = await updateTask(task.id, {
+        // Backend should support updating status together with title/description
         title: form.title,
         description: form.description,
+        status: form.status,
       });
+      // Update local task with server response and go back to read-only view
       setTask(res.data);
       setError(null);
+      setIsEditing(false);
     } catch (err) {
       console.error("Failed to update task", err);
       setError("Failed to save changes.");
@@ -84,14 +124,10 @@ export default function TaskDetailsPage() {
     }
   }
 
-  function handleBack() {
-    navigate("/board");
-  }
-
   if (loading) {
     return (
       <div className="task-details">
-        <button type="button" onClick={handleBack}>
+        <button type="button" onClick={handleBack} className="task-details__back-btn">
           ← Back to board
         </button>
         <p>Loading task…</p>
@@ -99,13 +135,24 @@ export default function TaskDetailsPage() {
     );
   }
 
-  if (error || !task) {
+  if (error && !task) {
     return (
       <div className="task-details">
-        <button type="button" onClick={handleBack}>
+        <button type="button" onClick={handleBack} className="task-details__back-btn">
           ← Back to board
         </button>
         <p>{error || "Task not found."}</p>
+      </div>
+    );
+  }
+
+  if (!task) {
+    return (
+      <div className="task-details">
+        <button type="button" onClick={handleBack} className="task-details__back-btn">
+          ← Back to board
+        </button>
+        <p>Task not found.</p>
       </div>
     );
   }
@@ -116,11 +163,22 @@ export default function TaskDetailsPage() {
 
   return (
     <div className="task-details">
-      <button type="button" onClick={handleBack}>
+      <button type="button" onClick={handleBack} className="task-details__back-btn">
         ← Back to board
       </button>
 
-      <h1>Task details</h1>
+      <div className="task-details__header">
+        <h1>Task details</h1>
+        {!isEditing && (
+          <button type="button" className="task-details__edit-btn" onClick={handleEditClick}>
+            <span className="task-details__edit-icon" aria-hidden="true">
+              ✏️
+            </span>
+            <span>Edit</span>
+          </button>
+        )}
+      </div>
+
       <div className="task-details__content">
         <div className="task-details__meta">
           <p>
@@ -137,23 +195,48 @@ export default function TaskDetailsPage() {
           </p>
         </div>
 
-        <form className="task-details__form" onSubmit={handleSubmit}>
-          <div className="field">
-            <label htmlFor="title">Title</label>
-            <input id="title" name="title" type="text" value={form.title} onChange={handleChange} maxLength={255} required />
-          </div>
+        <div className="task-details__main">
+          {!isEditing ? (
+            <>
+              <h2 className="task-details__title">{task.title}</h2>
+              <div className="task-details__description">{task.description ? <p>{task.description}</p> : <p className="task-details__placeholder">No description yet.</p>}</div>
+            </>
+          ) : (
+            <form className="task-details__form" onSubmit={handleSubmit}>
+              <div className="field">
+                <label htmlFor="title">Title</label>
+                <input id="title" name="title" type="text" value={form.title} onChange={handleChange} maxLength={255} required />
+              </div>
 
-          <div className="field">
-            <label htmlFor="description">Description</label>
-            <textarea id="description" name="description" value={form.description} onChange={handleChange} rows={4} maxLength={2000} placeholder="Describe the task..." />
-          </div>
+              <div className="field">
+                <label htmlFor="description">Description</label>
+                <textarea id="description" name="description" value={form.description} onChange={handleChange} rows={4} maxLength={2000} placeholder="Describe the task..." />
+              </div>
 
-          <button type="submit" disabled={saving}>
-            {saving ? "Saving…" : "Save changes"}
-          </button>
-        </form>
+              <div className="field">
+                <label htmlFor="status">Status</label>
+                <select id="status" name="status" value={form.status} onChange={handleChange}>
+                  {STATUS_FLOW.map((status) => (
+                    <option key={status} value={status}>
+                      {statusNames[status] ?? status}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-        {error && <p className="task-details__error">{error}</p>}
+              <div className="task-details__actions">
+                <button type="submit" disabled={saving}>
+                  {saving ? "Saving…" : "Save changes"}
+                </button>
+                <button type="button" className="task-details__cancel-btn" onClick={handleCancelEdit} disabled={saving}>
+                  Cancel
+                </button>
+              </div>
+
+              {error && <p className="task-details__error">{error}</p>}
+            </form>
+          )}
+        </div>
       </div>
     </div>
   );
