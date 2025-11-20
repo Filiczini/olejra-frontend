@@ -1,6 +1,6 @@
-import { api } from "../../api/axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { login } from "../../api/auth";
 
 import "./LoginPage.css";
 
@@ -16,7 +16,7 @@ export default function LoginPage() {
     if (isSubmitting) return; // prevent double submit
     setError("");
 
-    // Minimal client-side checks
+    // Minimal client-side checks before calling API
     const emailTrim = email.trim();
     const pass = password;
     if (!emailTrim || !pass) {
@@ -26,34 +26,28 @@ export default function LoginPage() {
 
     setSubmitting(true);
     try {
-      // Backend sets httpOnly cookie 'olejra_token'
-      await api.post("/auth/login", { email: emailTrim, password: pass });
-      navigate("/board", { replace: true });
-    } catch (err) {
-      if (err?.response) {
-        const { status, data } = err.response;
-        switch (status) {
-          case 401:
-            setError("Invalid email or password");
-            break;
-          case 429:
-            setError("Too many attempts. Please try again later.");
-            break;
-          case 422:
-            setError(data?.error || "Invalid form data");
-            break;
-          default:
-            if (status >= 500) {
-              setError("Server error. Please try again later.");
-            } else {
-              setError(data?.error || `Server Error: ${status}`);
-            }
-        }
-      } else if (err?.request) {
-        setError("Failed to connect to the backend");
-      } else {
-        setError(`Error: ${err?.message || "unknown error"}`);
+      // Use login helper so we handle status codes explicitly instead of relying on axios errors
+      const res = await login({ email: emailTrim, password: pass });
+
+      if (res.ok) {
+        navigate("/board", { replace: true });
+        return;
       }
+
+      if (res.status === 401) {
+        setError("Invalid email or password");
+      } else if (res.status === 400) {
+        setError("Invalid data. Please make sure your email is in a valid format and your password is at least 6 characters long.");
+      } else if (res.status === 429) {
+        setError("Too many attempts. Please try again later.");
+      } else if (res.status >= 500) {
+        setError("Server error. Please try again later.");
+      } else {
+        setError("Unexpected error. Please try again.");
+      }
+    } catch (err) {
+      // Network-level or unexpected error (no response from backend)
+      setError("Failed to connect to the backend");
     } finally {
       setSubmitting(false);
     }
