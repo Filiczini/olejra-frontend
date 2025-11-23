@@ -1,35 +1,30 @@
 // olejra-frontend/src/components/pages/BoardPage.jsx
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
 import "./BoardPage.css";
-import { useNavigate } from "react-router-dom";
-import { STATUS_FLOW, canTransition } from "../../utils/status";
+import { STATUSES, getStatusLabel, canTransition } from "../../utils/status";
 import { advanceTask } from "../../api/tasks";
-
-const statusNames = {
-  BACKLOG: "Backlog",
-  TODO: "To-do",
-  IN_PROGRESS: "In-progress",
-  DONE: "Done",
-};
 
 export default function BoardPage() {
   const [loading, setLoading] = useState({});
   const [tasks, setTasks] = useState([]);
   const navigate = useNavigate();
-  const statuses = STATUS_FLOW;
 
-  // Auth is handled by AuthGate; here we only fetch tasks
+  // Fetch tasks for board
   useEffect(() => {
     let cancelled = false;
+
     (async () => {
       try {
         const res = await api.get("/tasks");
-        if (!cancelled) setTasks(res.data);
+        if (cancelled) return;
+        setTasks(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
         console.error("Failed to load board", err);
       }
     })();
+
     return () => {
       cancelled = true;
     };
@@ -37,16 +32,16 @@ export default function BoardPage() {
 
   async function handleAdvance(task) {
     const from = task.status;
-    const currentIndex = STATUS_FLOW.indexOf(from);
-    const to = STATUS_FLOW[currentIndex + 1];
+    const currentIndex = STATUSES.indexOf(from);
+    const to = STATUSES[currentIndex + 1];
 
-    // Local guard: only allow moving to the next status
-    if (to == null || !canTransition(from, to)) {
+    // Only allow moving to the next status
+    if (!to || !canTransition(from, to)) {
       console.warn("Invalid local transition", { from, to });
       return;
     }
 
-    // Prevent duplicate requests for the same task
+    // Skip if already loading this task
     if (loading[task.id]) return;
 
     setLoading((prev) => ({ ...prev, [task.id]: true }));
@@ -59,7 +54,7 @@ export default function BoardPage() {
         navigate("/");
       } else if (err?.response?.status === 400) {
         console.error("Advance rejected by backend", err);
-        // Optional: refetch board state
+        // Тут потім можна додати refetch борди
       } else {
         console.error("Advance failed", err);
       }
@@ -69,16 +64,20 @@ export default function BoardPage() {
   }
 
   const columns = { BACKLOG: [], TODO: [], IN_PROGRESS: [], DONE: [] };
-  for (const task of tasks) columns[task.status]?.push(task);
+  for (const task of tasks) {
+    if (columns[task.status]) {
+      columns[task.status].push(task);
+    }
+  }
 
-  const handleLogout = async () => {
+  async function handleLogout() {
     try {
       await api.post("/auth/logout");
       navigate("/");
     } catch (err) {
       console.error("Logout failed", err);
     }
-  };
+  }
 
   return (
     <div className="board">
@@ -90,9 +89,9 @@ export default function BoardPage() {
       </div>
 
       <div className="board__columns">
-        {statuses.map((status) => (
+        {STATUSES.map((status) => (
           <div key={status} className={`column ${columns[status].length ? "column--active" : ""}`}>
-            <h3 className="column__title">{statusNames[status]}</h3>
+            <h3 className="column__title">{getStatusLabel(status)}</h3>
 
             {columns[status].map((task) => (
               <div key={task.id} className="task">

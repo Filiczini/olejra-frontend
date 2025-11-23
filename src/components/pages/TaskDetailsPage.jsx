@@ -2,16 +2,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getTask, updateTask } from "../../api/tasks";
-import { STATUS_FLOW } from "../../utils/status";
+import { STATUSES, getStatusLabel, getStatusPosition } from "../../utils/status";
 import "./TaskDetailsPage.css";
 
-// Human-readable labels for statuses; should match BoardPage.
-const statusNames = {
-  BACKLOG: "Backlog",
-  TODO: "To-do",
-  IN_PROGRESS: "In-progress",
-  DONE: "Done",
-};
 
 export default function TaskDetailsPage() {
   const { id } = useParams(); // /tasks/:id
@@ -40,7 +33,7 @@ export default function TaskDetailsPage() {
         setForm({
           title: res.data.title ?? "",
           description: res.data.description ?? "",
-          status: res.data.status ?? STATUS_FLOW[0],
+          status: res.data.status ?? STATUSES[0],
         });
         setError(null);
       } catch (err) {
@@ -73,7 +66,7 @@ export default function TaskDetailsPage() {
     setForm({
       title: task.title ?? "",
       description: task.description ?? "",
-      status: task.status ?? STATUS_FLOW[0],
+      status: task.status ?? STATUSES[0],
     });
     setError(null);
     setIsEditing(true);
@@ -85,7 +78,7 @@ export default function TaskDetailsPage() {
       setForm({
         title: task.title ?? "",
         description: task.description ?? "",
-        status: task.status ?? STATUS_FLOW[0],
+        status: task.status ?? STATUSES[0],
       });
     }
     setError(null);
@@ -157,9 +150,9 @@ export default function TaskDetailsPage() {
     );
   }
 
-  const statusLabel = statusNames[task.status] ?? task.status;
-  const statusIndex = STATUS_FLOW.indexOf(task.status);
-  const statusPosition = statusIndex >= 0 ? `${statusIndex + 1} / ${STATUS_FLOW.length}` : "";
+  const statusLabel = getStatusLabel(task.status);
+  const statusIndex = getStatusPosition(task.status);
+  const statusPosition = statusIndex >= 0 ? `${statusIndex + 1} / ${STATUSES.length}` : "";
 
   return (
     <div className="task-details">
@@ -216,9 +209,9 @@ export default function TaskDetailsPage() {
               <div className="field">
                 <label htmlFor="status">Status</label>
                 <select id="status" name="status" value={form.status} onChange={handleChange}>
-                  {STATUS_FLOW.map((status) => (
+                  {STATUSES.map((status) => (
                     <option key={status} value={status}>
-                      {statusNames[status] ?? status}
+                      {getStatusLabel(status)}
                     </option>
                   ))}
                 </select>
