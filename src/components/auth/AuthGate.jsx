@@ -9,20 +9,24 @@ export default function AuthGate({ children }) {
 
   useEffect(() => {
     let cancelled = false;
+
+    // Check current user session on mount.
     (async () => {
       try {
-        await api.get("/auth/me");
+        await api.get("/auth/me"); // throws on 401 now
         if (!cancelled) {
           setAllowed(true);
           setLoading(false);
         }
-      } catch (_) {
+      } catch (error) {
         if (!cancelled) {
+          console.error("AuthGate: /auth/me failed", error); // simple debug log
           setAllowed(false);
           setLoading(false);
         }
       }
     })();
+
     return () => {
       cancelled = true;
     };

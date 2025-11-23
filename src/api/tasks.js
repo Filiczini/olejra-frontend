@@ -15,8 +15,8 @@ export function getTask(taskId) {
   return api.get(`/tasks/${taskId}`);
 }
 
-// Update task title and/or description.
+// Update task fields.
+// data can include: { title?, description?, status? }
 export function updateTask(taskId, data) {
-  // data: { title?, description? }
   return api.patch(`/tasks/${taskId}`, data);
 }
