@@ -18,7 +18,10 @@ if (!interceptorAttached) {
         try {
           await api.post("/auth/logout");
         } catch (_) {}
-        window.location.assign("/");
+
+        if (window.location.pathname !== "/") {
+          window.location.assign("/");
+        }
       }
       return Promise.reject(err);
     }
