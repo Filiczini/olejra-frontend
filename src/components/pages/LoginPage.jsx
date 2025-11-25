@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/auth";
 
 import "./LoginPage.css";
+import { getAuthErrorMessage } from "../../helpers/error-handling";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -34,17 +35,7 @@ export default function LoginPage() {
         return;
       }
 
-      if (res.status === 401) {
-        setError("Invalid email or password");
-      } else if (res.status === 400) {
-        setError("Invalid data. Please make sure your email is in a valid format and your password is at least 6 characters long.");
-      } else if (res.status === 429) {
-        setError("Too many attempts. Please try again later.");
-      } else if (res.status >= 500) {
-        setError("Server error. Please try again later.");
-      } else {
-        setError("Unexpected error. Please try again.");
-      }
+      setError(getAuthErrorMessage(res.status));
     } catch (err) {
       // Network-level or unexpected error (no response from backend)
       setError("Failed to connect to the backend");
