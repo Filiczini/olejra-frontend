@@ -2,13 +2,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
-import "./BoardPage.css";
-import { STATUSES, getStatusLabel, canTransition } from "../../utils/status";
 import { advanceTask } from "../../api/tasks";
+import { STATUSES, getStatusLabel, canTransition } from "../../utils/status";
+import { Header } from "../../components/Header/Header";
+
+import "./BoardPage.css";
 
 export default function BoardPage() {
   const [loading, setLoading] = useState({});
   const [tasks, setTasks] = useState([]);
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   // Fetch tasks for board
@@ -29,6 +32,29 @@ export default function BoardPage() {
       cancelled = true;
     };
   }, []);
+
+  // Fetch current user for header
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const res = await api.get("/auth/me");
+        if (cancelled) return;
+        setUser(res.data.user);
+      } catch (err) {
+        if (err?.response?.status === 401) {
+          navigate("/");
+        } else {
+          console.error("Failed to load current user", err);
+        }
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [navigate]);
 
   async function handleAdvance(task) {
     const from = task.status;
@@ -81,12 +107,7 @@ export default function BoardPage() {
 
   return (
     <div className="board">
-      <div className="board__header">
-        <h1 className="board__title">Olejra - choose the future !</h1>
-        <button className="logout-btn" onClick={handleLogout} aria-label="Вийти з акаунту" title="Вийти">
-          Exit
-        </button>
-      </div>
+      <Header userName={`Hello, ${user?.email}`} onLogout={handleLogout} />
 
       <div className="board__columns">
         {STATUSES.map((status) => (

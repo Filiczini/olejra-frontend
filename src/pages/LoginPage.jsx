@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../api/auth";
+import { login } from "../api/auth";
 
 import "./LoginPage.css";
-import { getAuthErrorMessage } from "../../helpers/error-handling";
+import { getAuthErrorMessage } from "../helpers/error-handling";
 
 export default function LoginPage() {
   const navigate = useNavigate();
