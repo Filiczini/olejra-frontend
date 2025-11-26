@@ -1,10 +1,9 @@
 // olejra-frontend/src/components/pages/TaskDetailsPage.jsx
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getTask, updateTask } from "../../api/tasks";
-import { STATUSES, getStatusLabel, getStatusPosition } from "../../utils/status";
+import { getTask, updateTask } from "../api/tasks";
+import { STATUSES, getStatusLabel, getStatusPosition } from "../utils/status";
 import "./TaskDetailsPage.css";
-
 
 export default function TaskDetailsPage() {
   const { id } = useParams(); // /tasks/:id

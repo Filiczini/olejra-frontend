@@ -1,8 +1,9 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "./components/pages/LoginPage.jsx";
-import Board from "./components/pages/BoardPage.jsx";
+import Login from "./pages/LoginPage.jsx";
+import Board from "./pages/BoardPage/BoardPage.jsx";
 import AuthGate from "./components/auth/AuthGate.jsx";
-import TaskDetailsPage from "./components/pages/TaskDetailsPage.jsx";
+import TaskDetailsPage from "./pages/TaskDetailsPage.jsx";
+import { Header } from "./components/Header/Header.jsx";
 
 import "./App.css";
 
