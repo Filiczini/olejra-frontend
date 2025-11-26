@@ -1,4 +1,4 @@
-import "../Header/Header.css";
+import "./Header.css";
 
 export function Header({ userName, userSubtitle, onLogout }) {
   return (

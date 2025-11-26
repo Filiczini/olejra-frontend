@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
 import { advanceTask } from "../../api/tasks";
 import { STATUSES, getStatusLabel, canTransition } from "../../utils/status";
-import { Header } from "../../components/Header/Header";
+import { Header } from "../../components/layout/Header/Header";
 
 import "./BoardPage.css";
 
