@@ -5,6 +5,7 @@ import { advanceTask } from "../../api/tasks";
 import { STATUSES, getStatusLabel, canTransition } from "../../utils/status";
 import { Header } from "../../components/layout/Header/Header";
 import { Column } from "../../components/Board/Column";
+import { Footer } from "../../components/layout/Footer";
 
 import "./BoardPage.css";
 
@@ -121,6 +122,7 @@ export default function BoardPage() {
           />
         ))}
       </div>
+      <Footer />
     </div>
   );
 }
