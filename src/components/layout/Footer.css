@@ -1,0 +1,38 @@
+.olejra-footer {
+  width: 100%;
+  padding: 10px 24px;
+  background: #050816;
+  color: #9ca3af;
+  border-top: 1px solid #111827;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.olejra-footer__left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.olejra-footer__separator {
+  opacity: 0.6;
+}
+
+.olejra-footer__right {
+  display: flex;
+  align-items: center;
+}
+
+.olejra-footer__link {
+  text-decoration: none;
+  color: inherit;
+  opacity: 0.85;
+}
+
+.olejra-footer__link:hover {
+  opacity: 1;
+  text-decoration: underline;
+}

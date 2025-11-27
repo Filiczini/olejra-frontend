@@ -96,6 +96,7 @@
   background-color: #111827;
   border-color: rgba(248, 250, 252, 0.7);
   transform: translateY(-1px);
+  cursor: pointer;
 }
 
 .header__logout-btn:active {
