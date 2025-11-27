@@ -1,4 +1,3 @@
-// olejra-frontend/src/components/pages/BoardPage.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
