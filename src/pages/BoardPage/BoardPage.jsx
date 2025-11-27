@@ -5,7 +5,6 @@ import { advanceTask } from "../../api/tasks";
 import { STATUSES, getStatusLabel, canTransition } from "../../utils/status";
 import { Header } from "../../components/layout/Header/Header";
 import { Column } from "../../components/Board/Column";
-import { Task } from "../../components/Board/Task";
 
 import "./BoardPage.css";
 
@@ -112,17 +111,14 @@ export default function BoardPage() {
 
       <div className="board__columns">
         {STATUSES.map((status) => (
-          <Column key={status} title={getStatusLabel(status)} hasTasks={columns[status].length > 0}>
-            {columns[status].map((task) => (
-              <Task
-                key={task.id}
-                task={task}
-                isLoading={!!loading[task.id]} // Pass loading state for this task
-                onOpenDetails={(taskId) => navigate(`/tasks/${taskId}`)}
-                onAdvance={handleAdvance}
-              />
-            ))}
-          </Column>
+          <Column
+            key={status}
+            title={getStatusLabel(status)}
+            tasks={columns[status]} // pass tasks array for this status
+            loadingById={loading} // full loading map
+            onOpenDetails={(taskId) => navigate(`/tasks/${taskId}`)}
+            onAdvance={handleAdvance}
+          />
         ))}
       </div>
     </div>
