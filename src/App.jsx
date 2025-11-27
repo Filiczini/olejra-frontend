@@ -3,7 +3,7 @@ import Login from "./pages/LoginPage.jsx";
 import Board from "./pages/BoardPage/BoardPage.jsx";
 import AuthGate from "./components/auth/AuthGate.jsx";
 import TaskDetailsPage from "./pages/TaskDetailsPage.jsx";
-import { Header } from "./components/Header/Header.jsx";
+import { Header } from "./components/layout/Header/Header.jsx";
 
 import "./App.css";
 

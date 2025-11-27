@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
 import { advanceTask } from "../../api/tasks";
 import { STATUSES, getStatusLabel, canTransition } from "../../utils/status";
-import { Header } from "../../components/Header/Header";
+import { Header } from "../../components/layout/Header/Header";
+import { Column } from "../../components/Board/Column";
 
 import "./BoardPage.css";
 
@@ -111,9 +112,7 @@ export default function BoardPage() {
 
       <div className="board__columns">
         {STATUSES.map((status) => (
-          <div key={status} className={`column ${columns[status].length ? "column--active" : ""}`}>
-            <h3 className="column__title">{getStatusLabel(status)}</h3>
-
+          <Column key={status} title={getStatusLabel(status)} hasTasks={columns[status].length > 0}>
             {columns[status].map((task) => (
               <div key={task.id} className="task">
                 <span className="task__title" onClick={() => navigate(`/tasks/${task.id}`)} tabIndex={0}>
@@ -126,7 +125,7 @@ export default function BoardPage() {
                 )}
               </div>
             ))}
-          </div>
+          </Column>
         ))}
       </div>
     </div>
