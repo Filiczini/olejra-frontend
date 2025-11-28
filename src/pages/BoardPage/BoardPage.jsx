@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
 import { advanceTask } from "../../api/tasks";
 import { STATUSES, getStatusLabel, canTransition } from "../../utils/status";
-import { Header } from "../../components/layout/Header/Header";
+import { Layout } from "../../components/layout/Layout";
 import { Column } from "../../components/Board/Column";
-import { Footer } from "../../components/layout/Footer";
 
 import "./BoardPage.css";
 
@@ -107,22 +106,21 @@ export default function BoardPage() {
   }
 
   return (
-    <div className="board">
-      <Header userName={`Hello, ${user?.email}`} onLogout={handleLogout} />
-
-      <div className="board__columns">
-        {STATUSES.map((status) => (
-          <Column
-            key={status}
-            title={getStatusLabel(status)}
-            tasks={columns[status]} // pass tasks array for this status
-            loadingById={loading} // full loading map
-            onOpenDetails={(taskId) => navigate(`/tasks/${taskId}`)}
-            onAdvance={handleAdvance}
-          />
-        ))}
+    <Layout userName={user ? `Hello, ${user.email}` : ""} onLogout={handleLogout}>
+      <div className="board">
+        <div className="board__columns">
+          {STATUSES.map((status) => (
+            <Column
+              key={status}
+              title={getStatusLabel(status)}
+              tasks={columns[status]} // pass tasks array for this status
+              loadingById={loading} // full loading map
+              onOpenDetails={(taskId) => navigate(`/tasks/${taskId}`)}
+              onAdvance={handleAdvance}
+            />
+          ))}
+        </div>
       </div>
-      <Footer />
-    </div>
+    </Layout>
   );
 }
