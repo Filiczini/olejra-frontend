@@ -4,7 +4,7 @@ import { api } from "../../api/axios";
 import { advanceTask } from "../../api/tasks";
 import { STATUSES, getStatusLabel, canTransition } from "../../utils/status";
 import { Layout } from "../../components/layout/Layout";
-import { Column } from "../../components/Board/Column";
+import { Column } from "../../components/board/Column";
 
 import "./BoardPage.css";
 
