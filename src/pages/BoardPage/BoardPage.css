@@ -61,56 +61,6 @@
   border-color: #cbd5e1;
 }
 
-.task {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 10px 12px;
-  margin-bottom: 10px;
-  font-size: 14px;
-  line-height: 1.3;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease,
-    transform 0.08s ease;
-}
-
-.task:hover {
-  border-color: #cbd5e1;
-  background-color: rgba(15, 23, 42, 0.02);
-  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08); /* lift card on hover */
-  transform: translateY(-1px);
-}
-
-.task__title {
-  flex: 1;
-  color: var(--text);
-}
-
-.task__button {
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 4px 8px;
-  margin-left: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.task__button:hover {
-  background: var(--accent-hover);
-}
-
-.task__button:active {
-  transform: translateY(1px);
-}
-
 .board__header {
   display: flex;
   align-items: center;
@@ -176,4 +126,67 @@
   .board__columns {
     grid-template-columns: 1fr;
   }
+}
+
+/* Уся карточка таски */
+.task {
+  display: flex;
+  align-items: stretch; /* діти тягнуться по висоті */
+  background: var(--card, #fff);
+  border: 1px solid var(--border);
+  border-radius: 8px; /* можна 4px, якщо хочеш більш квадратну */
+  overflow: hidden; /* щоб внутрішні елементи не вилазили за рамку */
+  margin-bottom: 8px;
+  padding: 0;
+}
+
+/* Центр – просто текст */
+.task__title {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+
+  font-size: 14px;
+  line-height: 1.3;
+  text-align: left;
+  color: var(--text);
+}
+
+/* Ліва/права кнопки */
+.task__icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 14px; /* тільки по ширині */
+  border: none;
+  outline: none;
+  background: transparent; /* як у Bootstrap input-group addon */
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Вертикальний роздільник зліва від тексту */
+.task__icon-btn--edit {
+  border-right: 1px solid var(--border);
+}
+
+/* Вертикальний роздільник справа від тексту */
+.task__icon-btn--advance {
+  border-left: 1px solid var(--border);
+}
+
+/* Легка підсвітка по ховеру (опціонально) */
+.task__icon-btn:hover:not(:disabled) {
+  background: rgba(15, 23, 42, 0.04);
+}
+
+.task__icon-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
 }

@@ -4,18 +4,17 @@ export function Task({ task, isLoading, onOpenDetails, onAdvance }) {
 
   return (
     <div className="task">
-      {/* Click on title opens Task Details page */}
-      <span
-        className="task__title"
-        onClick={() => onOpenDetails(task.id)}
-        tabIndex={0} // Allow keyboard focus for better accessibility
-      >
-        {task.title}
-      </span>
+      {/* Left edit button – opens Task Details / edit */}
+      <button type="button" className="task__icon-btn task__icon-btn--edit" onClick={() => onOpenDetails(task.id)} disabled={isLoading} title="Edit task">
+        ✎
+      </button>
 
-      {/* Show advance button only if task is not in DONE status */}
+      {/* Center: plain text span, NOT a button */}
+      <span className="task__title">{task.title}</span>
+
+      {/* Right: move forward button */}
       {!isDone && (
-        <button onClick={() => onAdvance(task)} disabled={isLoading} className="task__button" title="Move to next column">
+        <button type="button" onClick={() => onAdvance(task)} disabled={isLoading} className="task__icon-btn task__icon-btn--advance" title="Move to next column">
           →
         </button>
       )}
