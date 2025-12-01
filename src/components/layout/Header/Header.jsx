@@ -1,9 +1,10 @@
 import "./Header.css";
+import { Container } from "../Container";
 
 export function Header({ userName, userSubtitle, onLogout }) {
   return (
     <header className="header">
-      <div className="header__inner">
+      <Container className="header__inner">
         <a href="/" className="header__brand">
           <span className="header__logo">
             <span className="header__logo-text">Olejra</span>
@@ -18,7 +19,7 @@ export function Header({ userName, userSubtitle, onLogout }) {
         <button className="header__logout-btn" onClick={onLogout} aria-label="Exit from account" title="Logout">
           Exit
         </button>
-      </div>
+      </Container>
     </header>
   );
 }

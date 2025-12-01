@@ -75,7 +75,6 @@
 
 /* Logout button */
 .header__logout-btn {
-  margin-left: auto;
   padding: 0.45rem 0.9rem;
   border-radius: 999px;
   border: 1px solid rgba(148, 163, 184, 0.5);
