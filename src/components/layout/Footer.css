@@ -1,8 +1,8 @@
 .olejra-footer {
   width: 100%;
-  background: #050816;
-  color: #9ca3af;
-  border-top: 1px solid #111827;
+  background: var(--accent);
+  color: var(--text-subtle);
+  border-top: 1px solid var(--header-border);
   font-size: 12px;
   display: flex;
   justify-content: space-between;
@@ -27,7 +27,7 @@
 
 .olejra-footer__link {
   text-decoration: none;
-  color: inherit;
+  color: var(--header-fg, inherit);
   opacity: 0.85;
 }
 
