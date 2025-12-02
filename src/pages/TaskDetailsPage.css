@@ -3,8 +3,8 @@
 /* Root container: light canvas under dark global header */
 .task-details {
   /* Use a light neutral background to match the board layout */
-  background: #f3f4f6;
-  color: #020617;
+  background: var(--bg);
+  color: var(--text);
   box-sizing: border-box;
 }
 
@@ -22,7 +22,7 @@
   padding: 0;
   border: none;
   background: transparent;
-  color: #9ca3af;
+  color: var(--text-subtle);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.18em;
@@ -36,7 +36,7 @@
 }
 
 .task-details__back:hover {
-  color: #6b7280;
+  color: var(--text-muted);
   transform: translateX(-1px);
 }
 
@@ -63,14 +63,14 @@
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: #9ca3af;
+  color: var(--text-subtle);
 }
 
 .task-details__title {
   font-size: 24px;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: #020617;
+  color: var(--text);
 }
 
 /* Edit button styled as a pill floating over light canvas */
@@ -79,14 +79,14 @@
   align-items: center;
   gap: 6px;
   padding: 8px 18px;
-  border-radius: 999px;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  background: #ffffff;
-  color: #020617;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
+  background: var(--card);
+  color: var(--text);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.16);
+  box-shadow: var(--shadow-soft);
   transition:
     background 0.15s ease,
     transform 0.1s ease,
@@ -95,10 +95,10 @@
 }
 
 .task-details__edit-btn:hover {
-  background: #f9fafb;
-  border-color: rgba(15, 23, 42, 0.14);
+  background: var(--bg-soft);
+  border-color: var(--border);
   transform: translateY(-1px);
-  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.22);
+  box-shadow: var(--shadow-strong);
 }
 
 .task-details__edit-icon {
@@ -125,16 +125,14 @@
 
 /* Meta card (left column) – light card with subtle shadow */
 .task-details__meta-card {
-  background: #ffffff;
-  border-radius: 18px;
-  border: none;
+  background: var(--card);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-subtle);
   padding: 28px 30px;
   display: flex;
   flex-direction: column;
   gap: 18px;
-  box-shadow:
-    0 18px 50px rgba(15, 23, 42, 0.06),
-    0 0 0 1px rgba(148, 163, 184, 0.06);
+  box-shadow: var(--shadow-soft);
 }
 
 .task-details__meta-group {
@@ -148,12 +146,12 @@
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: #9ca3af;
+  color: var(--text-subtle);
 }
 
 .task-details__meta-value {
   font-size: 13px;
-  color: #4b5563;
+  color: var(--text-muted);
 }
 
 .task-details__meta-value--mono {
@@ -170,19 +168,19 @@
 .task-details__status-dot {
   width: 8px;
   height: 8px;
-  border-radius: 999px;
-  background: #f59e0b;
+  border-radius: var(--radius-pill);
+  background: var(--status-inprogress-border, #f59e0b);
   box-shadow: 0 0 10px rgba(245, 158, 11, 0.45);
 }
 
 .task-details__status-position {
   font-size: 12px;
-  color: #9ca3af;
+  color: var(--text-subtle);
 }
 
 /* Form card (right column) – large dark panel with inner card centered */
 .task-details__form-card {
-  border-radius: 18px;
+  border-radius: var(--radius-card);
   padding: 40px 46px;
   background: radial-gradient(circle at top, rgba(31, 41, 55, 0.75), rgba(15, 23, 42, 1));
   box-shadow:
@@ -226,10 +224,10 @@
 .task-details__input,
 .task-details__textarea,
 .task-details__select {
-  border-radius: 8px;
-  border: 1px solid rgba(55, 65, 81, 0.85);
-  background: #020617;
-  color: #e5e7eb;
+  border-radius: var(--radius-input);
+  border: 1px solid var(--input-border, rgba(55, 65, 81, 0.85));
+  background: var(--input-bg, #020617);
+  color: var(--text, #e5e7eb);
   font-size: 14px;
   padding: 10px 12px;
   outline: none;
@@ -254,18 +252,16 @@
 /* Placeholder color */
 .task-details__input::placeholder,
 .task-details__textarea::placeholder {
-  color: rgba(100, 116, 139, 0.9);
+  color: var(--text-subtle);
 }
 
 /* Focus state */
 .task-details__input:focus,
 .task-details__textarea:focus,
 .task-details__select:focus {
-  border-color: rgba(248, 250, 252, 0.95);
-  box-shadow:
-    0 0 0 1px rgba(248, 250, 252, 0.9),
-    0 0 14px rgba(248, 250, 252, 0.25);
-  background: #020617;
+  border-color: var(--input-border-focus, #cbd5e1);
+  box-shadow: 0 0 0 3px var(--ring);
+  background: var(--input-bg, #020617);
 }
 
 /* Disabled state used for read-only view */
@@ -274,8 +270,8 @@
 .task-details__select:disabled {
   cursor: default;
   opacity: 0.9;
-  background: #020617;
-  border-color: rgba(55, 65, 81, 0.9);
+  background: var(--input-bg, #020617);
+  border-color: var(--input-border, rgba(55, 65, 81, 0.9));
   box-shadow: none;
 }
 
@@ -291,10 +287,10 @@
 .task-details__primary-btn {
   min-width: 130px;
   padding: 9px 18px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: none;
-  background: #f9fafb;
-  color: #020617;
+  background: var(--card);
+  color: var(--text);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -307,7 +303,7 @@
 }
 
 .task-details__primary-btn:hover:not(:disabled) {
-  background: #ffffff;
+  background: var(--card);
   transform: translateY(-1px);
   box-shadow: 0 0 22px rgba(255, 255, 255, 0.22);
 }
@@ -322,10 +318,10 @@
 /* Secondary button (cancel) */
 .task-details__secondary-btn {
   padding: 9px 16px;
-  border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.7);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border, rgba(148, 163, 184, 0.7));
   background: transparent;
-  color: rgba(148, 163, 184, 0.98);
+  color: var(--text-subtle);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -338,9 +334,9 @@
 }
 
 .task-details__secondary-btn:hover:not(:disabled) {
-  background: rgba(15, 23, 42, 0.9);
-  border-color: rgba(226, 232, 240, 0.9);
-  color: #e5e7eb;
+  background: var(--accent-soft, rgba(15, 23, 42, 0.9));
+  border-color: var(--border);
+  color: var(--text, #e5e7eb);
   transform: translateY(-1px);
 }
 
@@ -357,7 +353,7 @@
   border-radius: 8px;
   border: 1px solid rgba(248, 113, 113, 0.6);
   background: rgba(127, 29, 29, 0.16);
-  color: #fecaca;
+  color: var(--danger, #fecaca);
   font-size: 12px;
 }
 

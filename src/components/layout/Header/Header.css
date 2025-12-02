@@ -2,9 +2,9 @@
 
 /* Main header wrapper */
 .header {
-  background-color: #020617; /* dark navy background */
-  color: #e5e7eb; /* light text */
-  border-bottom: 1px solid rgba(15, 23, 42, 0.7);
+  background-color: var(--accent); /* dark header background */
+  color: var(--header-fg); /* light text on dark header */
+  border-bottom: 1px solid var(--header-border);
 }
 
 /* Inner content layout */
@@ -30,10 +30,10 @@
   align-items: center;
   justify-content: center;
   padding: 0.45rem 1.25rem;
-  border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.45);
-  background: radial-gradient(circle at 0% 0%, #1f2937, #020617);
-  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.7);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border, rgba(148, 163, 184, 0.45));
+  background: radial-gradient(circle at 0% 0%, #1f2937, var(--accent-soft, #020617));
+  box-shadow: var(--shadow-strong, 0 12px 24px rgba(15, 23, 42, 0.7));
 }
 
 .header__logo-text {
@@ -68,18 +68,18 @@
   font-size: 0.75rem;
   opacity: 0.8;
   padding: 0.1rem 0.55rem;
-  border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.5);
-  background-color: rgba(15, 23, 42, 0.9);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border, rgba(148, 163, 184, 0.5));
+  background-color: var(--accent-soft, rgba(15, 23, 42, 0.9));
 }
 
 /* Logout button */
 .header__logout-btn {
   padding: 0.45rem 0.9rem;
-  border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.5);
-  background-color: #020617;
-  color: #e5e7eb;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border, rgba(148, 163, 184, 0.5));
+  background-color: var(--accent-soft, #020617);
+  color: var(--header-fg, #e5e7eb);
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -92,15 +92,15 @@
 }
 
 .header__logout-btn:hover {
-  background-color: #111827;
-  border-color: rgba(248, 250, 252, 0.7);
+  background-color: var(--accent, #111827);
+  border-color: var(--border, rgba(248, 250, 252, 0.7));
   transform: translateY(-1px);
   cursor: pointer;
 }
 
 .header__logout-btn:active {
   transform: translateY(0);
-  background-color: #020617;
+  background-color: var(--accent-soft, #020617);
 }
 
 /* Responsive tweaks */

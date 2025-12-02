@@ -32,8 +32,8 @@
 
 .column {
   background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
   padding: 12px 14px;
   min-height: 340px;
   transition:
@@ -47,18 +47,18 @@
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--text-subtle);
 }
 
 /* When column has tasks */
 .column--active {
-  background-color: #fafbfc;
-  border-color: #d8dee9;
+  background-color: var(--bg-soft);
+  border-color: var(--border);
 }
 
 .column:hover {
-  background-color: #f5f7fb; /* slightly darker than board background so columns stand out */
-  border-color: #cbd5e1;
+  background-color: var(--bg-soft); /* slightly darker than board background so columns stand out */
+  border-color: var(--border);
 }
 
 .board__header {
@@ -82,7 +82,7 @@
   background: var(--accent);
   color: #fff;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-input);
   padding: 8px 12px;
   font-weight: 600;
   cursor: pointer;
@@ -112,7 +112,7 @@
   }
   .logout-btn {
     padding: 6px 10px;
-    border-radius: 8px;
+    border-radius: var(--radius-input);
   }
 }
 
@@ -132,9 +132,9 @@
 .task {
   display: flex;
   align-items: stretch; /* діти тягнуться по висоті */
-  background: var(--card, #fff);
+  background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 8px; /* можна 4px, якщо хочеш більш квадратну */
+  border-radius: var(--radius-input); /* можна 4px, якщо хочеш більш квадратну */
   overflow: hidden; /* щоб внутрішні елементи не вилазили за рамку */
   margin-bottom: 8px;
   padding: 0;

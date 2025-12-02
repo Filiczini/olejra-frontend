@@ -1,32 +1,65 @@
-/* Global styles */
 :root {
-  --bg:       #f3f4f6;   /* slightly darker than white background */
-  --card:     #ffffff;   /* pure white card */
-  --card-hover: #f9fafb; /* subtle contrast on hover */
+  /* Core surfaces */
+  --bg: #f3f4f6; /* app canvas background */
+  --bg-soft: #f9fafb; /* softer panels, headers */
+  --card: #ffffff; /* main card background */
+  --card-elevated: #ffffff; /* elevated cards if we need stronger shadow */
 
-  --border:   #d1d5db;   /* visible but soft border */
-  --border-hover: #cbd5e1; /* darker border on hover */
+  /* Borders */
+  --border-subtle: rgba(15, 23, 42, 0.04); /* hairline borders */
+  --border: rgba(15, 23, 42, 0.08); /* standard card borders */
+  --input-bg: #ffffff;
+  --input-border: #e5e7eb;
+  --input-border-focus: #cbd5e1;
 
-  --text:     #111827;   /* deep graphite text color */
-  --text-light: #4b5563; /* for descriptions and secondary text */
+  /* Typography */
+  --text: #111827; /* default text */
+  --text-muted: #6b7280; /* secondary text */
+  --text-subtle: #9ca3af; /* labels, meta */
 
-  --muted:    #6b7280;   /* muted gray for labels or hints */
+  /* Primary action */
+  --accent: #242427; /* solid black primary */
+  --accent-hover: #111827; /* hover state for primary */
+  --accent-soft: #0f172a; /* optional soft dark background */
+  --ring: rgba(148, 163, 184, 0.45); /* focus outline */
 
-  --accent: #111111;        /* rich deep black */
-  --accent-hover: #616161;  /* smooth dark gray hover */
+  /* Status badges */
+  --status-backlog-bg: #f4f4f5;
+  --status-backlog-border: #e4e4e7;
+  --status-backlog-text: #71717a;
 
-  --error:    #dc2626;   /* clean red for error messages */
+  --status-todo-bg: #eef2ff;
+  --status-todo-border: #e0e7ff;
+  --status-todo-text: #4f46e5;
+
+  --status-inprogress-bg: #fef3c7;
+  --status-inprogress-border: #facc15;
+  --status-inprogress-text: #92400e;
+
+  --status-done-bg: #dcfce7;
+  --status-done-border: #22c55e;
+  --status-done-text: #166534;
+
+  /* Radii */
+  --radius-card: 18px; /* big cards (board, details, login) */
+  --radius-input: 10px; /* inputs and buttons */
+  --radius-pill: 999px; /* pills and badges */
+
+  /* Shadows */
+  --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.06);
+  --shadow-strong: 0 30px 80px rgba(15, 23, 42, 0.16);
 }
 
-html, body, #root {
-  height: 100%;
-}
-
+/* Global body styles using new tokens */
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
 }
