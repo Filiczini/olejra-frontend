@@ -1,9 +1,10 @@
+// src/pages/LoginPage.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api/auth";
+import { getAuthErrorMessage } from "../helpers/error-handling";
 
 import "./LoginPage.css";
-import { getAuthErrorMessage } from "../helpers/error-handling";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -12,23 +13,21 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [isSubmitting, setSubmitting] = useState(false);
 
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
-    if (isSubmitting) return; // prevent double submit
+    if (isSubmitting) return;
+
     setError("");
 
-    // Minimal client-side checks before calling API
     const emailTrim = email.trim();
-    const pass = password;
-    if (!emailTrim || !pass) {
+    if (!emailTrim || !password) {
       setError("Please fill email and password");
       return;
     }
 
     setSubmitting(true);
     try {
-      // Use login helper so we handle status codes explicitly instead of relying on axios errors
-      const res = await login({ email: emailTrim, password: pass });
+      const res = await login({ email: emailTrim, password });
 
       if (res.ok) {
         navigate("/board", { replace: true });
@@ -37,30 +36,73 @@ export default function LoginPage() {
 
       setError(getAuthErrorMessage(res.status));
     } catch (err) {
-      // Network-level or unexpected error (no response from backend)
       setError("Failed to connect to the backend");
     } finally {
       setSubmitting(false);
     }
-  };
+  }
 
   return (
-    <form onSubmit={handleSubmit} noValidate>
-      <h1>Access your workspace</h1>
+    <div className="login-page">
+      <form className="login-card" onSubmit={handleSubmit} noValidate>
+        {/* Logo pill */}
+        <div className="login-card__logo" aria-hidden="true">
+          O
+        </div>
 
-      <input type="email" inputMode="email" autoComplete="email" placeholder="your@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <h1 className="login-card__title">Welcome back</h1>
+        <p className="login-card__subtitle">Enter your email to sign in to Olejra</p>
 
-      <input type="password" autoComplete="current-password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
+        <div className="login-card__field">
+          <label htmlFor="email" className="login-card__field-label">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            className="login-card__input"
+            inputMode="email"
+            autoComplete="email"
+            placeholder="name@company.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
 
-      <button type="submit" disabled={isSubmitting} aria-busy={isSubmitting} aria-disabled={isSubmitting}>
-        {isSubmitting ? "Log in..." : "Log in"}
-      </button>
+        <div className="login-card__field">
+          <label htmlFor="password" className="login-card__field-label">
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            className="login-card__input"
+            autoComplete="current-password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
 
-      {error && (
-        <p style={{ color: "red" }} role="alert" aria-live="polite">
-          {error}
-        </p>
-      )}
-    </form>
+        <button type="submit" className="login-card__submit" disabled={isSubmitting} aria-busy={isSubmitting}>
+          <span>{isSubmitting ? "Signing in..." : "Sign In"}</span>
+        </button>
+
+        {error && (
+          <p className="login-card__error" role="alert" aria-live="polite">
+            {error}
+          </p>
+        )}
+
+        <div className="login-card__footer">
+          <span>No account?</span>
+          <a href="mailto:filiczini@gmail.com" className="login-card__footer-link">
+            Contact admin
+          </a>
+        </div>
+      </form>
+    </div>
   );
 }
