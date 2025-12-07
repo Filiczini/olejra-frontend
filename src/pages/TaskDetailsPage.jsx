@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getTask, updateTask } from "../api/tasks";
+import { api } from "../api/axios";
 import { STATUSES, getStatusLabel } from "../utils/status";
 import { Layout } from "../components/layout/Layout";
 import { Container } from "../components/layout/Container";
@@ -12,11 +13,39 @@ export default function TaskDetailsPage() {
   const navigate = useNavigate();
 
   const [task, setTask] = useState(null);
+  const [user, setUser] = useState(null); // Стан для користувача
   const [form, setForm] = useState({ title: "", description: "", status: "" });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await api.get("/auth/me");
+        if (cancelled) return;
+        setUser(res.data.user);
+      } catch (err) {
+        if (err?.response?.status === 401) {
+          navigate("/");
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [navigate]);
+
+  async function handleLogout() {
+    try {
+      await api.post("/auth/logout");
+      navigate("/");
+    } catch (err) {
+      console.error("Logout failed", err);
+    }
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -103,7 +132,6 @@ export default function TaskDetailsPage() {
     }
   }
 
-  // Форматування дати
   const formatDate = (dateString) => {
     if (!dateString) return "—";
     return new Date(dateString).toLocaleString("uk-UA", {
@@ -120,10 +148,9 @@ export default function TaskDetailsPage() {
   const statusPosition = statusIndex >= 0 ? `${statusIndex + 1} / ${STATUSES.length}` : "";
 
   return (
-    <Layout>
+    <Layout userName={user ? `Hello, ${user.email}` : ""} onLogout={handleLogout}>
       <Container>
         <div className="task-page">
-          {/* Навігація назад */}
           <div className="task-page__nav">
             <button type="button" onClick={handleBack} className="nav-back-btn">
               <ArrowLeft size={16} />
@@ -136,7 +163,6 @@ export default function TaskDetailsPage() {
 
           {!loading && task && (
             <div className="task-layout">
-              {/* Ліва колонка: Мета-дані */}
               <aside className="task-meta">
                 <div className="task-meta__header">
                   <span className="task-meta__breadcrumb">Board · Task</span>
@@ -178,7 +204,6 @@ export default function TaskDetailsPage() {
                   </div>
                 </div>
 
-                {/* Кнопка редагування (якщо не редагуємо) */}
                 {!isEditing && (
                   <button type="button" className="edit-trigger-btn" onClick={handleEditClick}>
                     <Pencil size={14} />
@@ -187,7 +212,6 @@ export default function TaskDetailsPage() {
                 )}
               </aside>
 
-              {/* Права колонка: Темна форма */}
               <main className="task-form-container">
                 <form className={`task-form ${isEditing ? "is-editing" : "is-readonly"}`} onSubmit={handleSubmit}>
                   <div className="task-form__header">
