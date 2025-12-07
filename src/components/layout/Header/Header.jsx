@@ -1,24 +1,22 @@
 import "./Header.css";
 import { Container } from "../Container";
+import { LogOut } from "lucide-react";
 
 export function Header({ userName, userSubtitle, onLogout }) {
   return (
     <header className="header">
       <Container className="header__inner">
         <a href="/" className="header__brand">
-          <span className="header__logo">
-            <span className="header__logo-text">Olejra</span>
-          </span>
+          <span className="header__logo-dot"></span>
+          <span className="header__logo-text">OLEJRA</span>
         </a>
 
-        <div className="header__user">
-          {userName && <span className="header__user-name">{userName}</span>}
-          {userSubtitle && <span className="header__user-tag">{userSubtitle}</span>}
+        <div className="header__actions">
+          <button className="header__action-btn" onClick={onLogout} aria-label="Exit from account">
+            <LogOut size={18} className="header__icon" />
+            <span>Exit</span>
+          </button>
         </div>
-
-        <button className="header__logout-btn" onClick={onLogout} aria-label="Exit from account" title="Logout">
-          Exit
-        </button>
       </Container>
     </header>
   );
