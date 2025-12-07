@@ -63,3 +63,46 @@ body {
     Arial,
     sans-serif;
 }
+
+.olejra-brand-link {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+/* Обгортка для вирівнювання */
+.olejra-logo-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Текст логотипу + Крапка */
+.olejra-logo-text {
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 800; /* Жирний шрифт для брендингу */
+  font-size: 20px; /* Розмір */
+  letter-spacing: -0.02em; /* Трохи щільніший трекінг */
+  color: var(--text); /* Основний колір тексту (Чорний/Zinc-900) */
+  position: relative; /* База для позиціювання крапки */
+  padding-left: 14px; /* Відступ зліва для крапки */
+  line-height: 1;
+}
+
+/* Фіолетова крапка */
+.olejra-logo-text::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%); /* Центрування по вертикалі */
+
+  width: 8px; /* Діаметр */
+  height: 8px;
+  border-radius: 50%; /* Коло */
+
+  /* Колір крапки: змінна з теми або фіолетовий */
+  background-color: var(--brand-color, #a353f0);
+}

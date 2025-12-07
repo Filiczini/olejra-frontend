@@ -46,12 +46,14 @@ export default function LoginPage() {
     <div className="login-page">
       <form className="login-card" onSubmit={handleSubmit} noValidate>
         {/* Logo pill */}
-        <div className="login-card__logo" aria-hidden="true">
-          O
-        </div>
+        <a href="/" className="olejra-brand-link" aria-label="Go to dashboard">
+          <span className="olejra-logo-wrapper">
+            <span className="olejra-logo-text">OLEJRA</span>
+          </span>
+        </a>
 
         <h1 className="login-card__title">Welcome back</h1>
-        <p className="login-card__subtitle">Enter your email to sign in to Olejra</p>
+        <p className="login-card__subtitle">Enter your credentials to access the workspace</p>
 
         <div className="login-card__field">
           <label htmlFor="email" className="login-card__field-label">
@@ -63,7 +65,7 @@ export default function LoginPage() {
             className="login-card__input"
             inputMode="email"
             autoComplete="email"
-            placeholder="name@company.com"
+            placeholder="name@olejra.app"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
