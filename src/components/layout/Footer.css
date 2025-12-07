@@ -1,37 +1,80 @@
 .olejra-footer {
-  width: 100%;
-  background: var(--accent);
-  color: var(--text-subtle);
-  border-top: 1px solid var(--header-border);
-  font-size: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-sizing: border-box;
+  background-color: var(--footer-bg, #1f2937);
+  color: var(--footer-text, #9ca3af);
+  padding: 24px 0;
+  margin-top: auto;
+  border-top: 1px solid var(--footer-border, #374151);
 }
 
+/* Inner container */
+.olejra-footer__inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+/* Left section */
 .olejra-footer__left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.olejra-footer__title {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.olejra-footer__subtitle {
+  color: var(--footer-text, #9ca3af);
+}
+
+/* Right section */
+.olejra-footer__right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.olejra-footer__status {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.olejra-footer__separator {
-  opacity: 0.6;
+.olejra-footer__status-label {
+  color: var(--footer-text, #9ca3af);
 }
 
-.olejra-footer__right {
+/* Vertical separator line */
+.olejra-footer__separator {
+  width: 1px;
+  height: 16px;
+  background-color: var(--footer-border, #374151);
+}
+
+/* Badges for status / version / ENV */
+.env-badge {
+  background-color: #374151;
+  color: #d1d5db;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 11px;
+}
+
+/* Links on the right */
+.footer__link {
   display: flex;
   align-items: center;
-}
-
-.olejra-footer__link {
+  gap: 6px;
+  color: var(--footer-text, #9ca3af);
   text-decoration: none;
-  color: var(--header-fg, inherit);
-  opacity: 0.85;
+  transition: color 0.2s;
 }
 
-.olejra-footer__link:hover {
-  opacity: 1;
-  text-decoration: underline;
+.footer__link:hover {
+  color: #ffffff;
 }
