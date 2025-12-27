@@ -1,7 +1,7 @@
 // src/pages/LoginPage.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../api/auth";
+import { login } from "../api/auth.ts";
 import { getAuthErrorMessage } from "../helpers/error-handling";
 
 import "./LoginPage.css";

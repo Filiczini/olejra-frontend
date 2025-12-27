@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { api } from "../../api/axios";
+import { api } from "../../api/axios.ts";
 
 export default function AuthGate({ children }) {
   const [isLoading, setLoading] = useState(true);
